@@ -17,7 +17,6 @@ O projeto consiste na criação de um sistema eficiente de leitura e processamen
 <img src="markdown/img/rotas.png" width="600">
 
 
-
 ## 🛠️ Tecnologias Utilizadas
 
 | Área | Tecnologia | Descrição | Badge |
@@ -67,14 +66,14 @@ Siga os passos abaixo para configurar o projeto:
     python manage.py runserver
     ```
 
-# Presentation 🎥
+# Apresentação 🎥
 
 - Confira uma apresentação do Trinity no YouTube:
 
 - ![YouTube](https://img.shields.io/badge/In_Recording-%23FF0000.svg?style=for-the-badge&logo=Youtube&logoColor=white)
 
 
-# License 📜
+# Licença 📜
 
 This project is licensed under the MIT License. See the LICENSE file for more information.
 
