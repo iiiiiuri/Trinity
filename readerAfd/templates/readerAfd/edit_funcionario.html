@@ -1,0 +1,265 @@
+{% extends 'readerAfd/layout.html' %}
+{% load my_tags %}
+
+{% block title %}
+  Funcionários
+{% endblock %}
+
+{% block NomeCabecalho %}
+  <a href="{% url 'fileData' %}" class="print:hidden">Voltar</a>
+{% endblock %}
+
+{% block conteudo %}
+  <section class="mt-5">
+    <h1 class="text-white text-lg print:text-2xl font-semibold mr-6">Empresa: {{ funcionario.empresa }}  </h1>
+    <h1 class="text-white text-lg print:text-2xl font-semibold mr-6">CNPJ: {{funcionario.empresa.cnpj}}</h1>
+
+    <div class="flex w-full justify-between">
+      <h1 class="text-white text-lg print:text-2xl font-semibold mr-6">Nome: {{ funcionario.nome }}</h1>
+    <div>
+        <button id="salvar-alteracoes" class="bg-gradient-to-r from-green-700 to-green-900 outline-none p-2 text-white fonte-bold rounded-md mx-1">Salvar Alterações</button>
+        <button id="deletar-linha" class="bg-gradient-to-r from-red-700 to-red-900 outline-none p-2 text-white fonte-bold rounded-md mx-1">Deletar Linhas</button>
+
+        <button id="ano-mais" class="print:hidden bg-gradient-to-r from-blue-700 to-blue-900 outline-none p-2 text-white fonte-bold rounded-md mx-1">+ Ano</button>
+        <button id="ano-menos" class="print:hidden bg-gradient-to-r from-blue-700 to-blue-900 outline-none p-2 text-white fonte-bold rounded-md mx-1">- Ano</button>
+        <button id="mes-mais" class="print:hidden bg-gradient-to-r from-blue-700 to-blue-900 outline-none p-2 text-white fonte-bold rounded-md mx-1">+ Mês</button>
+        <button id="mes-menos" class="print:hidden bg-gradient-to-r from-blue-700 to-blue-900 outline-none p-2 text-white fonte-bold rounded-md mx-1">- Mês</button>
+        <button id="print-button" class="print:hidden bg-gradient-to-r from-green-700 to-green-900 outline-none p-2 text-white font-bold rounded-md mx-1">Imprimir</button>
+
+        <script>
+        document.getElementById('print-button').addEventListener('click', function() {
+          window.print();
+        });
+        </script>
+
+      </div>
+    </div>
+
+    <script>
+
+    </script>
+
+    <div class="overflow-x-auto mt-4 mb-8">
+      <table id="espelho" class="min-w-full divide-y divide-gray-200 print:h-full">
+        <thead class="bg-blue-900">
+          <tr>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Data</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Dia</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Entrada</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Saída</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Entrada</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Saída</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Tempo</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Esperado</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Tolerância</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Falta</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Hora Extra</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">A pagar</th>
+            <th class="px-4 py-4 text-left text-md font-semibold text-gray-50 uppercase tracking-wider border-2 border-gray-900">Situação</th>
+
+
+          </tr>
+        </thead>
+        <tbody class="bg-gray-900 divide-x divide-gray-900 bg-opacity-90">
+          {% for dia in diasMes %}
+            <tr>
+              {%if dia.situacao != 'normal' and dia.situacao != 'pagar' %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{ dia.data}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">{{dia.situacao|capfirst}}</td>
+                <td class="border-2 border-gray-600 px-4 py-4 whitespace-nowrap text-md">
+                  <select name="situacao" data-date="{{dia.data}}" data-pis="{{funcionario.pis}}" class="print:text-black text-white p-2 default-select w-full h-full rounded ring-offset-gray-800 bg-gray-700 border-gray-600">
+                    <option value="normal" {% if dia.situacao == "normal" %}selected{% endif %}>Normal</option>
+                    <option value="ferias" {% if dia.situacao == "ferias" %}selected{% endif %}>Férias</option>
+                    <option value="atestado" {% if dia.situacao == "atestado" %}selected{% endif %}>Atestado</option>
+                    <option value="folga" {% if dia.situacao == "folga" %}selected{% endif %}>Folga</option>
+                    <option value="pagar" {% if dia.situacao == "pagar" %}selected{% endif %}>Pagar</option>
+                    <option value="delete">Deletar</option>
+  
+                  </select>
+                </td>
+
+              {% else %}
+
+              <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-gray-500">{{ dia.data }}</td>
+              <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-gray-500">{{ dia.nome }}</td>
+              {% dict_key_lookup marcacoes_por_dia dia.data as marcacoes %}
+
+            {% if marcacoes and marcacoes.entradas.0 %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-green-500" contenteditable="true" onblur="atualizarHora(this, '{{ marcacoes.entradas.0 }}', '{{ funcionario.pis }}', this.parentElement)" data-date="{{ data }}">{{ marcacoes.entradas.0 }}</td>              
+            {% else %}
+                {% if dia.nome == 'DOM' %}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-orange-600">-</td>
+                {% else %}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-orange-600" contenteditable="true" onblur="atualizarHora(this, '-', '{{ funcionario.pis }}', this.parentElement)" data-date="{{ data }}">-</td>
+                {% endif %}
+            {% endif %}
+
+            {% if marcacoes and marcacoes.saidas.0 %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-green-500" contenteditable="true" onblur="atualizarHora(this, '{{ marcacoes.saidas.0 }}', '{{ funcionario.pis }}', this.parentElement)" data-date="{{ data }}">{{ marcacoes.saidas.0 }}</td>
+            {% else %}
+                {% if dia.nome == 'DOM' %}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-orange-600">-</td>
+                {% else %}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-orange-600" contenteditable="true" onblur="atualizarHora(this, '-', '{{ funcionario.pis }}', this.parentElement)" data-date="{{ data }}">-</td>
+                {% endif %}
+            {% endif %}
+
+            {% if marcacoes and marcacoes.entradas.1 %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-green-500" contenteditable="true" onblur="atualizarHora(this, '{{ marcacoes.entradas.1 }}', '{{ funcionario.pis }}', this.parentElement)" data-date="{{ data }}">{{ marcacoes.entradas.1 }}</td>              
+            {% else %}
+                {% if dia.nome == 'DOM' %}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-orange-600">-</td>
+                {% else %}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-orange-600" contenteditable="true" onblur="atualizarHora(this, '-', '{{ funcionario.pis }}', this.parentElement)" data-date="{{ data }}">-</td>
+                {% endif %}
+            {% endif %}
+
+            {% if marcacoes and marcacoes.saidas.1 %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-green-500" contenteditable="true" onblur="atualizarHora(this, '{{ marcacoes.saidas.1 }}', '{{ funcionario.pis }}', this.parentElement)" data-date="{{ data }}">{{ marcacoes.saidas.1 }}</td>              
+            {% else %}
+                {% if dia.nome == 'DOM' %}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-orange-600">-</td>
+                {% else %}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-orange-600" contenteditable="true" onblur="atualizarHora(this, '-', '{{ funcionario.pis }}', this.parentElement)" data-date="{{ data }}">-</td>
+                {% endif %}
+            {% endif %}
+
+              {% if marcacoes and marcacoes.tempo_str %}
+                <td id="total" class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-blue-300">{{ marcacoes.tempo_str }}</td>
+                {% else %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-600">-</td>
+              {% endif %}
+
+              {% if dia.nome == 'SAB' %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-yellow-500">{{esperado_sabado}}</td>
+              {% elif dia.nome == 'DOM' %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">-</td>
+              {% else %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-yellow-500">{{esperado_semana}}</td>
+              {% endif %}
+
+              {% if dia.nome == 'DOM' %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">-</td>
+              {% elif dia.nome == 'SAB' %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-emerald-500">{{tolerancia_sabado}}</td>
+              {% else %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-emerald-500">{{tolerancia_semana}}</td>
+                {% endif %} 
+
+              {% if marcacoes and marcacoes.falta %}
+                <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-600">{{ marcacoes.falta }}</td>
+                {% else %}
+                      {% if dia.nome == 'SAB' %}
+                      <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-600">{{esperado_sabado}}</td>
+                      {% elif dia.nome == 'DOM' %}
+                      <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-500">-</td>
+                      {% else %}
+                      <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-600">{{esperado_semana}}</td>
+                      {% endif %}
+                {% endif %}
+
+
+
+              {% if marcacoes and marcacoes.hora_extra %}
+              <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-indigo-300">{{ marcacoes.hora_extra }}</td>
+              {% else %}
+                  {%if dia.nome == 'DOM'%}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-red-600">-</td>
+                  {% else %}
+                    <td class="border-2 border-gray-600 px-4 py-4 print:text-black whitespace-nowrap text-md text-indigo-300">00:00</td>
+                  {% endif %}
+              {% endif %}
+
+
+              {% if marcacoes and marcacoes.valor_a_pagar %}
+              <td class="border-2 border-gray-600 px-4 py-1 print:text-black whitespace-nowrap text-md text-green-400">{{ marcacoes.valor_a_pagar }}</td>
+              {% else %}
+                  {%if dia.nome == 'DOM'%}
+                  <td class="border-2 border-gray-600 px-4 py-1 print:text-black whitespace-nowrap text-md text-red-600">-</td>
+                  {% else %}
+                    <td class="border-2 border-gray-600 px-6 py-1 print:text-black whitespace-nowrap text-md text-green-400">00:00</td>
+                  {% endif %}
+              {% endif %}
+
+            {% if dia.nome != "DOM" %}
+              <td class="border-2 border-gray-600 px-4 py-4 whitespace-nowrap text-md">
+                <select name="situacao" data-date="{{dia.data}}" data-pis="{{funcionario.pis}}" class="print:text-black text-white p-2 default-select w-full h-full rounded ring-offset-gray-800 bg-gray-700 border-gray-600">
+                  <option value="normal" {% if dia.situacao == "normal" %}selected{% endif %}>Normal</option>
+                  <option value="ferias" {% if dia.situacao == "ferias" %}selected{% endif %}>Férias</option>
+                  <option value="atestado" {% if dia.situacao == "atestado" %}selected{% endif %}>Atestado</option>
+                  <option value="folga" {% if dia.situacao == "folga" %}selected{% endif %}>Folga</option>
+                  <option value="pagar" {% if dia.situacao == "pagar" %}selected{% endif %}>Pagar</option>
+                  <option value="delete">Deletar</option>
+
+                </select>
+              </td>
+              {% else %}
+              <td class="border-2 border-gray-600 px-4 py-4 whitespace-nowrap text-md text-red-500">-</td>
+
+              {% endif %}
+
+              {% if dia.situacao == 'pagar' %}
+                <script>
+                  document.getElementById('HorasExtras').value = '{{ horas_extras }}';
+                  document.getElementById('HorasTrabalhadas').value = '{{ horas_trabalhadas }}';
+                  document.getElementById('HorasFaltantes').value = '{{ horas_faltantes }}';
+                </script>
+              {% endif %}
+
+              {%endif%}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section> 
+
+<div class="grid grid-cols-4 gap-4 bg-black bg-opacity-35 py-5 mb-4">
+  <div class="flex flex-col items-center">
+    <label for="horasExtras" class="mb-2 font-bold text-2xl text-white">Horas Extras</label>
+    <input id="HorasExtras" type="text" class="text-2xl font-semibold mb-2 px-4 py-2 text-center text-blue-600 bg-black bg-opacity-90 border-2 border-blue-600" disabled>
+  </div>
+
+  <div class="flex flex-col items-center">
+    <label for="horasTrabalhadas" class="mb-2 font-bold text-2xl text-white">Horas Trabalhadas</label>
+    <input id="HorasTrabalhadas" type="text"  class="text-2xl font-semibold mb-2 px-4 py-2 text-center text-blue-600 bg-black bg-opacity-90 border-2 border-blue-600" disabled>
+  </div>
+
+  <div class="flex flex-col items-center">
+    <label for="horasFaltantes" class="mb-2 font-bold text-2xl text-white">Horas Faltantes</label>
+    <input id="HorasFaltantes" type="text" class="text-2xl font-semibold mb-2 px-4 py-2 text-center text-blue-600 bg-black bg-opacity-90 border-2 border-blue-600" disabled>
+  </div>
+
+  <div class="flex flex-col items-center">
+    <label for="aPagar" class="mb-2 font-bold text-2xl text-white">Valores a Pagar</label>
+    <input id="aPagar" type="text" class="text-2xl font-semibold mb-2 px-4 py-2 text-center text-blue-600 bg-black bg-opacity-90 border-2 border-blue-600" disabled>
+  </div>
+</div>
+
+<div class="flex justify-between items-center mt-20 px-56 print:flex">
+
+  <div class="grid grid-rows-2 gap-4 items-center w-2/6">
+    <hr class="print:border-gray-950 border-2">
+    <p class="text-center text-black font-semibold text-2xl">Contribuidor</p>
+  </div>
+
+  <div class="grid grid-rows-2 gap-4 items-center w-2/6">
+    <hr class="print:border-gray-950 border-2">
+    <p class="text-center text-black font-semibold text-2xl">Empregador</p>
+  </div>
+
+</div>
+{% endblock %}
+
+
+

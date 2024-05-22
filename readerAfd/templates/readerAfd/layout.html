@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-Br">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="icon" href="{% static 'img/favicon.png' %}"/>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}"/>
+    <script src="{% static 'js/calculoColunas.js' %}"></script>
+
+    <title>
+      {% block title %}
+      {% endblock %}
+    </title>
+
+  </head>
+  <body class="bg-alpha bg-cover flex flex-col min-h-screen">
+    <header class=" bg-gradient-to-r bg-blue-950 bg-opacity-50 flex">
+          <img src="{% static 'img/trinityLogo.svg' %}" alt="logo" class="w-36 p-1"/>
+          {% if user.is_authenticated %}
+            <a href="{%url 'logout' %}" class="print:hidden font-semibold text-lg text-white my-1 absolute right-2 bg-gradient-to-r from-blue-700 to-blue-900 outline-none p-2 tfonte-medium rounded-md mx-1">Sair</a>
+          {% endif %}
+    </header>
+
+    <div class="mt-4 ml-4 mr-4">
+      {% block conteudo %}
+      {% endblock %}
+    </div>
+
+    <footer class="mt-auto shadow rounded-t-md bg-opacity-70 bg-gray-900 w-full p-2 print:fixed print:bottom-0">
+       <div class="sm:flex sm:items-center sm:justify-between">
+          <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="{% static 'img/trinityLogo.svg' %}" class="h-8" alt="Logo"/>
+            <span class="self-center text-2xl font-semibold whitespace-nowrap text-white"></span>
+          </a>
+          <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="https://github.com/iiiiiuri" class="hover:underline">Iuri de Lima Ferreira</a>. All Rights Reserved.</span>
+       </div>
+    </footer>
+
+
+    <script src="{% static 'js/deletaLinha.js' %}" ></script>
+    <script src="{% static 'js/atualizaMarcacao.js' %}" ></script>
+    <script src="{% static 'js/attSelectedSituation.js' %}" ></script>
+    <script src="{% static 'js/dateNavigation.js' %}" ></script>
+    <script src="{% static 'js/configTabela.js' %}" ></script>
+    <script src="{% static 'js/resetDatabase.js' %}" ></script>
+  </body>
+</html>

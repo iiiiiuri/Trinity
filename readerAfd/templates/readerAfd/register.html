@@ -1,0 +1,65 @@
+{% extends 'readerAfd/layout.html' %}
+{% load static %}
+
+{% block title %}
+  Register
+{% endblock %}
+
+{% block NomeCabecalho %}
+  Register
+{% endblock %}
+
+{% block conteudo %}
+  <section>
+    <div class="flex justify-center items-center">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="bg-red-600 bg-opacity-60 p-2 text-center border border-white w-56 rounded-md mt-10 shadow-sm">
+            <h1 class="text-white font-semibold">{{ message }}</h1>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="flex flex-col items-center justify-center px-6 py-14 mx-auto">
+      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-white">
+        <img class="w-80 mr-2" src="{% static 'img/trinityLogo.svg' %}" alt="logo" />
+      </a>
+      <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-950 bg-opacity-90 border-sky-500">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">Criar Nova Conta</h1>
+
+          <form class="space-y-4 md:space-y-6" action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+
+            <div>
+              <label for="username" class="block mb-2 text-sm font-medium text-white">Usuário</label>
+              <input type="username" name="username" id="username" class="outline-none border-sky-500 bg-opacity-70 border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 placeholder-gray-400 text-white" placeholder="Seu Usuário aqui" required />
+            </div>
+
+            <div>
+              <label for="email" class="block mb-2 text-sm font-medium text-white">Email</label>
+              <input type="email" name="email" id="email" class="outline-none border-sky-500 bg-opacity-70 border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 placeholder-gray-400 text-white" placeholder="nome@email.com" required />
+            </div>
+
+            <div>
+              <label for="password" class="block mb-2 text-sm font-medium text-white">Senha</label>
+              <input type="password" name="password" id="password" class="outline-none border-sky-500 bg-opacity-70 border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 placeholder-gray-400 text-white" placeholder="*******" required />
+            </div>
+
+            <div>
+                <label for="nome" class="block mb-2 text-sm font-medium text-white">Nome Completo Responsavel</label>
+                <input type="nome" name="nome" id="nome" class="outline-none border-sky-500 bg-opacity-70 border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 placeholder-gray-400 text-white" placeholder="*******" required />
+            </div>
+
+            <div class="flex items-center justify-between">
+              <a href="#" class="text-sm font-medium hover:underline text-blue-500">Esqueceu sua senha?</a>
+            </div>
+
+            <button type="submit" class="w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Registrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

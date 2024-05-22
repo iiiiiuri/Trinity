@@ -1,0 +1,157 @@
+{% extends 'readerAfd/layout.html' %}
+
+{% block title %}
+  File Info
+{% endblock %}
+
+{% block NomeCabecalho %}
+  File Info
+{% endblock %}
+
+{% block conteudo %}
+
+
+<div>
+  <button onclick="loadBox('Dados_empresa')" id="buttonDadosEmpresa" class="bg-gradient-to-r from-blue-700 to-blue-900 outline-none p-2 text-white fonte-medium rounded-md mx-1">Empresa</button>
+  <button onclick="loadBox('Dados_Funcionario')" id="buttonDadosFuncionarios" class="bg-gradient-to-r from-blue-700 to-blue-900 outline-none p-2 text-white fonte-medium rounded-md mx-1">Funcionários</button>
+  <button onclick="loadBox('Configuracoes')" id="buttonConfiguracoes" class="bg-gradient-to-r from-blue-700 to-blue-900 outline-none p-2 text-white fonte-medium rounded-md mx-1">Configurações</button>
+  <button onclick="deleteDatabase()" class="bg-gradient-to-r from-red-700 to-red-900 outline-none p-2 text-white fonte-medium rounded-md mx-1">
+    Resetar Banco de Dados
+  </button>
+</div>
+
+
+<section id="Configuracoes" class="mt-5 hidden">
+
+  <div class="flex justify-center items-center">
+    <div class="bg-gray-900 bg-opacity-80 rounded-md text-white p-10 border border-white shadow-sm shadow-blue-600">
+      <h1 class="text-4xl mb-4 font-semibold">
+        Configurações da Tabela
+      </h1>
+      <h1>{{config}}</h1>
+      <div class="grid grid-cols-3 gap-4">
+
+      {% for configuracao in configuracoes %}
+      
+      {% if configuracao.diaSemana != "DOM" %}
+      <div class="flex flex-col mb-2">
+        <span class="text-lg font-bold">{{configuracao.diaSemana}}</span>
+        <label for="" class="text-sm font-medium">Esperado</label>
+        <input type="time" class="border-2 border-gray-300 p-2 rounded-md text-black" value="{{configuracao.esperado}}" oninput="storeChange(event, '{{configuracao.diaSemana}}', 'Esperado', '{{configuracao.esperado}}')">
+
+        <label for="" class="text-sm font-medium">Tolerancia</label>
+        <input type="time" class="border-2 border-gray-300 p-2 rounded-md text-black" value="{{configuracao.tolerancia}}" oninput="storeChange(event, '{{configuracao.diaSemana}}', 'Tolerancia', '{{configuracao.tolerancia}}')">
+
+      </div>
+
+      {% endif %}
+      {% endfor %}
+
+  </div>
+
+  <div class="flex justify-center mt-4">
+    <button id="saveButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hidden" onclick="sendChange()">Salvar</button>
+  </div>
+</section>
+
+<section id="Dados_empresa" class="mt-5 hidden">
+    {% for register in cabecalho %}
+      <div class="flex justify-center items-center">
+        <div class="bg-gray-900 bg-opacity-80 rounded-md text-white p-10 border border-white shadow-sm shadow-blue-600">
+          <h1 class="text-4xl mb-4 font-semibold">
+              Informações da Empresa
+          </h1>
+
+          <div class="ml-4">
+            <h1 class="mb-1 text-lg font-semibold">Cnpj/Cpf: <span class="text-blue-500">{{ register.cnpj_cpf }}</span></h1>
+            <h1 class="mb-1 text-lg font-semibold">Cei: <span class="text-blue-500">{{ register.cei|default:'Não encontrado' }}</span></h1>
+            <h1 class="mb-1 text-lg font-semibold">Razão Social/Nome: <span class="text-blue-500">{{ register.razao_social_nome }}</span></h1>
+            <h1 class="mb-1 text-lg font-semibold">Número Fabricação Rep: <span class="text-blue-500">{{ register.numero_fabricacao_rep }}</span></h1>
+            <h1 class="mb-1 text-lg font-semibold">Data Inicial: <span class="text-blue-500">{{ register.data_inicial }}</span></h1>
+            <h1 class="mb-1 text-lg font-semibold">Data Final: <span class="text-blue-500">{{ register.data_final }}</span></h1>
+            <h1 class="mb-1 text-lg font-semibold">Data Geração: <span class="text-blue-500">{{ register.data_geracao }}</span></h1>
+            <h1 class="mb-1 text-lg font-semibold">Horário Geração: <span class="text-blue-500">{{ register.horario_geracao }}</span></h1>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+</section>
+
+  <section id="Dados_Funcionario" class="mt-5 hidden">
+    <div class="flex justify-center items-center">
+      <div class="bg-gray-900 bg-opacity-80 rounded-md text-white p-10 border border-white shadow-sm shadow-blue-600">
+        <div class="flex justify-between items-center">
+          <h1 class="text-4xl mb-4 font-semibold">Funcionários</h1>
+          <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+              </svg>
+            </div>
+            <input type="search" id="searchInput" onkeyup="searchFuncionarios()" class="block w-full p-2 ps-10 text-sm border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white" placeholder="Pesquise um Funcionario" required />
+          </div>
+        </div>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg h-96 opacity-80">
+          <table class="w-full text-sm text-left rtl:text-right" id="funcionariosTable">
+            <thead class="text-xs uppercase bg-blue-900 text-white sticky top-0">
+              <tr>
+                <th scope="col" class="px-6 py-3">Pis</th>
+                <th scope="col" class="px-6 py-3">Nome</th>
+                <th scope="col" class="px-6 py-3">Editar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for register in funcionario %}
+                <tr class="even:bg-gray-50 even:dark:bg-gray-800 border-b">
+                  <td class="px-6 py-4">{{ register.pis }}</td>
+                  <td class="px-6 py-4">{{ register.nome }}</td>
+                  <td class="px-6 py-4">
+                    <a href="{%url 'fileEdit' register.id diaAtual %}"><i class="bi bi-pencil-square"></i></a>
+                  </td>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function searchFuncionarios() {
+      var input, filter, table, tr, td, i, txtValue
+      input = document.getElementById('searchInput')
+      filter = input.value.toUpperCase()
+      table = document.getElementById('funcionariosTable')
+      tr = table.getElementsByTagName('tr')
+    
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName('td')[1] 
+        if (td) {
+          txtValue = td.textContent || td.innerText
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = ''
+          } else {
+            tr[i].style.display = 'none'
+          }
+        }
+      }
+    }
+
+
+      function loadBox(boxId) {
+        // Lista de todas as boxes
+        var allBoxes = ['Dados_empresa', 'Dados_Funcionario', 'Configuracoes'];
+        
+        
+        // Oculta todas as boxes
+        for (var i = 0; i < allBoxes.length; i++) {
+          document.getElementById(allBoxes[i]).classList.add('hidden');
+        }
+      
+        // Mostra a box desejada
+        document.getElementById(boxId).classList.remove('hidden');
+      }
+
+      loadBox('Dados_empresa');
+      </script>
+{% endblock %}

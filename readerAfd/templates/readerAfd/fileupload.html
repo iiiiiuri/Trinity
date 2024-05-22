@@ -1,0 +1,72 @@
+{% extends 'readerAfd/layout.html' %}
+
+{% block title %}
+  File Upload
+{% endblock %}
+
+{% block NomeCabecalho %}
+  File Upload
+{% endblock NomeCabecalho %}
+
+{% block conteudo %}
+
+{% if messages %}
+<div class="flex items-center p-4 mb-4 text-sm  border  rounded-lg bg-opacity-45 bg-blue-950 text-red-400 border-red-800" role="alert">
+  <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+  </svg>
+  <span class="sr-only">Info</span>
+  <div>
+    <span class="font-bold text-red-700">Empresa Já Cadastrada</span>
+    <span class="font-normal">Esse arquivo já foi cadastrado em nossa base de dados com um outro usuário.</span>
+  </div>
+</div>
+
+{% endif %}
+
+
+
+<form action="{% url 'fileupload'%}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="flex items-center justify-center w-6/12 mx-auto mt-10 p-4">
+    <label for="dropzone-file" class="w-full flex flex-col items-center justify-center h-64 border-2 hover:border-blue-700 border-dashed rounded-lg cursor-pointer bg-blue-950 hover:bg-blue-600 bg-opacity-40 hover:bg-opacity-20 border-gray-300">
+      <div class="flex flex-col items-center justify-center pt-5 pb-6 transition-all delay-75">
+        <i class="bi bi-filetype-txt text-gray-400 text-4xl"></i>
+        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+          <span class="font-semibold text-sm md:text-lg">Carregue o arquivo</span> 
+        </p>
+        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+          <span class="font-sans text-sm md:text-lg">Faça Upload do seu arquivo AFD</span> 
+        </p>
+
+      </div>
+      <input id="dropzone-file" name="file" type="file" class="hidden" onchange="updateFileName(event)" />      
+      <input id="file-name" type="text" class="bg-transparent outline-none text-blue-400 text-center" readonly />
+    </label>
+  </div>
+  <div id="divInputSendFile" class="justify-center items-center mt-4 hidden">
+    <span class="text-gray-200 font-medium mr-2 italic">Processar Arquivos</span>
+    <button type="submit" class="bg-gradient-to-r from-blue-600 to-blue-800 w-16 p-2 text-center rounded-md transition duration-500 hover:shadow-neon hover:text-neon">
+      <i class="bi bi-arrow-right text-white"></i>
+    </button>
+  </div>
+</form>
+
+  <style>
+    .hover\:shadow-neon:hover {
+      box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 5px #0ff, 0 0 10px #0ff;
+    }
+  </style>
+
+  <script>
+    function updateFileName(event) {
+      var fileName = event.target.files[0].name
+      var divButton = document.getElementById('divInputSendFile')
+    
+      divButton.classList.remove('hidden')
+      divButton.classList.add('flex')
+    
+      document.getElementById('file-name').value = fileName
+    }
+  </script>
+{% endblock %}
